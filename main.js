@@ -6,36 +6,75 @@ scrollBtn.onclick = function () {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-const track = document.querySelector('.track');
-const nextBtn = document.querySelector('.next');
-const prevBtn = document.querySelector('.prev');
+// Loop through each product card
+document.querySelectorAll('.product-card').forEach(card => {
+  const track = card.querySelector('.track');
+  const nextBtn = card.querySelector('.next');
+  const prevBtn = card.querySelector('.prev');
+  const step = 210;
 
-const step = 210; // width of + gap
+  let auto;
+  let scrollTimeout;
 
-// Manual buttons
-nextBtn.addEventListener('click', () => {
-  track.scrollBy({left: step, behavior: 'smooth' });
-});
-prevBtn.addEventListener('click', () => {
-  track.scrollBy({left: -step, behavior: 'smooth' });
-});
+  // function to start auto-scroll
+  function startAutoScroll() {
+    auto = setInterval(() => {
+      track.scrollBy({ left: step, behavior: 'smooth' });
+      // loop back when near end
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      };
+    }, 3000);
+  }
 
-// Auto scroll every 3 seconds
-let auto = setInterval(() => {
-  track.scrollBy({ left: step, behavior: 'smooth' });
-  // loop back when near end
-  if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
-    track.scrollTo({ left: 0, bahavior: 'smooth' });
-  };
-}, 3000);
+  // function to reset auto-scroll
+  function resetAutoScroll() {
+    clearInterval(auto);
+    startAutoScroll();
+  }
 
-// Pause auto-scroll on user / drag
-track.addEventListener('mouseenter', () => clearInterval(auto));
-track.addEventListener('mouseleave', () => {
-  auto = setInterval(() => {
-    track.scrollBy({ left: step, behavior: 'smooth' });
+  function goNext() {
     if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
-      track.scrollTo({ left: 1, behavior: 'smooth' });
+      // At the end → go back to start
+      track.scrollTo({ left: 0, behavior: 'smooth'});
+    } else {
+      track.scrollBy({ left: step, behavior: 'smooth'});
     }
+  }
+
+  function goPrev() {
+    if (track.scrollLeft <= 0) {
+      // At the start → go to end
+      track.scrollTo({ left: track.scrollWidth, behavior: 'smooth'});
+    } else {
+      track.scrollBy({ left: -step, behavior: 'smooth'});
+    }
+  }
+
+  // reset auto-scroll aftr manual scroll/drag
+  track.addEventListener('scroll', () => {
+    clearInterval(auto); // stop auto while scrolling
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => 
+      resetAutoScroll(), 2000); // restart 2s after user stops
   });
+
+  // Manual buttons
+  nextBtn.addEventListener('click', () => {
+    // track.scrollBy({left: step, behavior: 'smooth' });
+    goNext();
+    resetAutoScroll(); // restart timer
+  });
+  prevBtn.addEventListener('click', () => {
+    // track.scrollBy({left: -step, behavior: 'smooth' });
+    goPrev();
+    resetAutoScroll(); // restart timer
+  });
+
+  // Auto scroll starts initially
+  startAutoScroll();
+
+  // Pause auto-scroll on user / drag
+  track.addEventListener('mouseenter', () => clearInterval(auto));
+  track.addEventListener('mouseleave', () => resetAutoScroll());
 });
