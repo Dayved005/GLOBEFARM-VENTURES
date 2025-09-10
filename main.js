@@ -78,3 +78,60 @@ document.querySelectorAll('.product-card').forEach(card => {
   track.addEventListener('mouseenter', () => clearInterval(auto));
   track.addEventListener('mouseleave', () => resetAutoScroll());
 });
+
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const navMenu = document.getElementById('navMenu');
+const overlay = document.getElementById('overlay');
+
+// Open menu
+hamburgerBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  hamburgerBtn.classList.toggle('active')
+  navMenu.classList.toggle('active');
+  overlay.classList.toggle('active');
+
+  // Prevent body scroll when menu is open
+  if (navMenu.classList.contains('active')) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+});
+
+// Close menu when clicking nav links
+navMenu.addEventListener('click', (e) => {
+  if (e.target.tagName === 'A') {
+    hamburgerBtn.classList.remove('active');
+    navMenu.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+});
+
+// Close menu when clicking outside
+document.addEventListener("click", (e) => {
+  if (navMenu.classList.contains("active") &&
+      !navMenu.contains(e.target) &&
+      !hamburgerBtn.contains(e.target)) {
+    navMenu.classList.remove("active");
+    hamburgerBtn.classList.remove('active'); // reset hamburger
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+});
+
+overlay.addEventListener('click', () => {
+  hamburgerBtn.classList.remove('active');
+  navMenu.classList.remove('active');
+  overlay.classList.remove('active');
+});
+
+// Handle window resize
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    hamburgerBtn.classList.remove('active');
+    navMenu.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+});

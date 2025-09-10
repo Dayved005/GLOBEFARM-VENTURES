@@ -18,7 +18,7 @@ html {
   padding: 10px 40px;
   background-color: white;
   border-bottom: 1px solid #eee;
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -64,6 +64,69 @@ nav a {
 nav a:hover {
   text-decoration: underline;
   color: rgb(245, 139, 41);
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 300;  /* above menu */
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: rgb(84, 143, 108);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Animate to X when active */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;  /* hide middle bar */
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Overlay (hidden by default) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);  /* semi-transparent dark */  
+  opacity: 0;
+  pointer-events: none;  /* prevents blocking clicks when hidden */
+  transition: opacity 0.3s ease;
+  z-index: 150;  /* just below the menu (which should be >99) */
+  visibility: hidden;
+}
+
+/* Show overlay when active */
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
 }
 
 .cta {
@@ -158,7 +221,11 @@ section {
 }
 
 #about:target {
-  scroll-margin-top: 135px;
+  scroll-margin-top: 110px;
+}
+
+#products:target {
+  scroll-margin-top: 115px;
 }
 
 .card h2 {
@@ -300,4 +367,97 @@ section {
 .prev:hover, .next:hover {
   background: rgb(245, 139, 41);
   transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    justify-content: center;
+    position: sticky;
+    z-index: 250;  /* Higher than overlay */
+  }
+
+  .logo-container {
+    margin: auto;
+  }
+
+  .cta {
+    display: none;  /* hide main CTA on small screens if needed */
+  }
+
+  .hamburger {
+    display: flex;
+    position: absolute;
+    border: transparent;
+    right: 1.5rem;
+    top: 2.2rem;
+    z-index: 300;  /* Highest z-index */
+
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;  /* hidden offscreen */
+    height: 100%;
+    width: min(400px, 80vw);
+    background: white;
+    box-shadow: -2px 0 6px rgba(0, 0, 0, 0.5) inset;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+    transition: right 0.3s ease;
+    z-index: 200;
+    overflow-y: auto;
+  }
+
+  .nav-links.active {
+    right: 0;  /* slide in */
+  }
+
+  .nav-links a {
+    font-size: 1.3rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+    text-align: center;
+  }
+
+  .close-btn {
+    display: block;
+    align-self: flex-end;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgb(84, 143, 108);
+  }
+
+  /* Ensure overlay works on mobile */
+  .overlay {
+    z-index: 150;  /* Between navbar and nav-links */
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .hero {
+    padding: 9.9rem 2rem;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .nav-links {
+    width: 100vw;
+    right: -100vw;
+  }
+
+  .hamburger {
+    right: 1rem;
+  }
 }
