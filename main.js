@@ -99,14 +99,36 @@ hamburgerBtn.addEventListener('click', (e) => {
 });
 
 // Close menu when clicking nav links
-navMenu.addEventListener('click', (e) => {
+navMenu.addEventListener('click', handleNavClick);
+navMenu.addEventListener('touchend', handleNavClick);
+
+function handleNavClick(e) {
+  e.preventDefault();  // Prevent default first
+
   if (e.target.tagName === 'A') {
+    const href = e.target.getAttribute('href');
+
+    // Close menu first
     hamburgerBtn.classList.remove('active');
     navMenu.classList.remove('active');
     overlay.classList.remove('active');
     document.body.style.overflow = '';
+
+    // Then navigate
+    if (href && href !== '#') {
+      if (href.startsWith('#')) {
+        // Smooth scroll to section
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth'});
+        }
+      } else {
+        // Regular navigation
+        window.location.href = href;
+      }
+    }
   }
-});
+}
 
 // Close menu when clicking outside
 document.addEventListener("click", (e) => {
