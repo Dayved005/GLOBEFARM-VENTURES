@@ -241,7 +241,7 @@ nav a:hover::before {
   background: linear-gradient(rgba(244, 180, 0, 0.6), rgba(0, 0, 0, 0.9));
   color: whitesmoke;
   text-align: center;
-  padding: 7.9rem 4rem;
+  padding: 6.9rem 4rem;
 }
 
 .hero h1 {
