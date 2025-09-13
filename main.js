@@ -89,6 +89,7 @@ hamburgerBtn.addEventListener('click', (e) => {
   hamburgerBtn.classList.toggle('active')
   navMenu.classList.toggle('active');
   overlay.classList.toggle('active');
+  hamburgerBtn.setAttribute('aria-expanded', true);
 
   // Prevent body scroll when menu is open
   if (navMenu.classList.contains('active')) {
@@ -113,6 +114,7 @@ function handleNavClick(e) {
     navMenu.classList.remove('active');
     overlay.classList.remove('active');
     document.body.style.overflow = '';
+    hamburgerBtn.setAttribute('aria-expanded', false);
 
     // Then navigate
     if (href && href !== '#') {
@@ -146,6 +148,8 @@ overlay.addEventListener('click', () => {
   hamburgerBtn.classList.remove('active');
   navMenu.classList.remove('active');
   overlay.classList.remove('active');
+  document.body.style.overflow = '';  // restore scrolling
+  hamburgerBtn.setAttribute('aria-expanded', false);
 });
 
 // Handle window resize
