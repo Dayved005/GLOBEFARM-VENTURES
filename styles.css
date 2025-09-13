@@ -23,12 +23,14 @@ html {
   padding: 1rem 1.5rem;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .logo-container {
   display: flex;
+  flex-direction: row;
   align-items: center;
+  text-align: center;
   gap: 10px;
 }
 
@@ -36,6 +38,14 @@ html {
   height: auto;
   width: 80px;
   border-radius: 50%;
+  transition: all 0.5s ease;
+  box-shadow: 0 4px 15px rgba(84, 143, 108, 0.1);
+}
+
+.logo:hover {
+  transform: scale(1.05) rotate(8deg);
+  border: 2px solid rgb(245, 139, 41);
+  box-shadow: 0 6px 20px rgba(245, 139, 41, 0.2);
 }
 
 .company-name {
@@ -55,6 +65,15 @@ html {
   color: rgb(245, 139, 41);
 }
 
+.endorsement {
+  font-size: 0.47rem;
+  margin-top: 0.25rem;
+  font-style: italic;
+  color: rgb(84, 143, 108);
+  letter-spacing: 0.3px;
+  max-width: 120px;
+}
+
 nav a {
   margin: 0 1rem;
   color: rgb(84, 143, 108);
@@ -64,20 +83,25 @@ nav a {
 }
 
 nav a:hover {
-  text-decoration: underline;
+  text-decoration: none;
   color: rgb(245, 139, 41);
 }
+
+nav a:hover::before {
+  width: 100%;
+}
+
 
 .hamburger {
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 28px;
-  height: 22px;
+  width: 30px;
+  height: 24px;
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 300;  /* above menu */
+  z-index: 1100;  /* above menu */
 }
 
 .hamburger span {
@@ -86,13 +110,14 @@ nav a:hover {
   width: 100%;
   background: rgb(84, 143, 108);
   border-radius: 3px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
 }
 
 /* Animate to X when active */
 .hamburger.active span:nth-child(1) {
   transform: rotate(45deg) translate(8px, 8px);
+  background: rgb(245, 139, 41);
 }
 
 .hamburger.active span:nth-child(2) {
@@ -101,6 +126,7 @@ nav a:hover {
 
 .hamburger.active span:nth-child(3) {
   transform: rotate(-45deg) translate(6px, -6px);
+  background: rgb(245, 139, 41);
 }
 
 .nav-links {
@@ -116,10 +142,50 @@ nav a:hover {
   cursor: pointer;
   touch-action: manipulation;  /* Improves touch responsiveness */
   user-select: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  position: relative;
+  border-radius: 25px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   -webkit-user-select: none;
   touch-action: manipulation;
   position: relative;
   z-index: 1;
+}
+
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgb(245, 139, 41), rgb(84, 143, 108));
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-links a:hover {
+  color: rgb(245, 139, 41);
+  transform: translateY(-2px);
+  background: rgba(245, 139, 41, 0.0.5);
+}
+
+.nav-links a:hover::before {
+  width: 100%;
+}
+
+.nav-links a.active {
+  color: rgb(245, 139, 41);
+  background: rgba(245, 139, 41, 0.1);
+}
+
+.nav-links a.active::before {
+  width: 100%;
 }
 
 /* Overlay (hidden by default) */
@@ -145,17 +211,26 @@ nav a:hover {
 }
 
 .cta {
-  background-color: rgb(245, 139, 41);
+  background: linear-gradient(rgb(245, 139, 41), rgb(220, 120, 30));
   text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
   color: white;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 25px;
+  text-transform: uppercase;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(245, 139, 41, 0.5);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
 .cta:hover {
-  background-color: rgb(84, 143, 108);
+  background: linear-gradient(135deg, rgb(84, 143, 108), rgb(60, 120, 85));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(84, 143, 108, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 #home {
@@ -242,6 +317,10 @@ section {
 
 .card {
   margin-top: 1.5rem;
+}
+
+.card p {
+  font-family: 'Quicksand', sans-serif;
 }
 
 .vision-card {
